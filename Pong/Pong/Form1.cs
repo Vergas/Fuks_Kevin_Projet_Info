@@ -7,6 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+
+// TO DO : 2eme balle si score%10 = 0 et si balle 2 n'existe pas. (ATTENTION : pas de game over s'il reste une balle en jeu)
+// TO DO : threads pour changer couleur de fond à chaque fois que ça touche la raquette
+// TO DO : Serveur TCP
+
 namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
