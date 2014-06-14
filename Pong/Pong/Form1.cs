@@ -17,17 +17,7 @@ namespace WindowsFormsApplication1
         public int hautBas;
         public int score;
 
-        // nouvelle partie = (ré)initialisation des paramètres
-        public void newGame()
-        {
-            balle.Top = 20;
-            balle.Left = espaceJeu.Width / 2 - balle.Width / 2;
-            vitesse = 18;
-            gaucheDroite = 1;
-            hautBas = 1;
-            score = 0;
-            timer1.Enabled = true;
-        }
+
 
         public Form1()
         {
@@ -43,45 +33,10 @@ namespace WindowsFormsApplication1
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            move(balle);
             raquette.Left = Cursor.Position.X - (raquette.Width / 2); // la raquette suit la souris 
-
-            balle.Left = balle.Left + vitesse*gaucheDroite;
-            balle.Top = balle.Top + vitesse*hautBas;
-
-            if (balle.Bottom >= raquette.Top && balle.Bottom <= raquette.Bottom && balle.Left >= raquette.Left && balle.Right <= raquette.Right) // si la balle touche la raquette : 
-            {
-                vitesse = vitesse + 2;
-                hautBas = -1; // balle change de sens verticalement et remonte
-                score = score + 1;
-                scoreLabel.Text = score.ToString();
-            }
-
-            // changement de sens horizontal quand la balle touche bord gauche ou droite
-            if (balle.Left <= espaceJeu.Left)
-            {
-                gaucheDroite = 1;
-            }
-            if (balle.Right >= espaceJeu.Right)
-            {
-                gaucheDroite = -1;
-            }
-            // changement de sens vertical quand la balle touche le sommet de l'espace de jeu
-            if (balle.Top <= espaceJeu.Top)
-            {
-                hautBas = 1;
-            }
-
-            // fin du jeu quand la balle arrive en bas de l'espace de jeu
-            if (balle.Bottom >= espaceJeu.Bottom)
-            {
-                timer1.Enabled = false;
-                position();
-                messageLabel.Text = "GAME OVER // Score : " + score.ToString() +"\n Nouvelle partie : F2" + "\n Exit : Escape";
-                messageLabel.Visible = true;
-
-            }
-
         }
+
 
         // centre le message au milieu de l'écran
         public void position()
@@ -96,17 +51,13 @@ namespace WindowsFormsApplication1
             // touche espace = pause
             if (e.KeyCode == Keys.Space)
             {
-                timer1.Enabled = false;
-                messageLabel.Text = "PAUSE. Appuyez sur ENTER pour relancer la partie";
-                position();
-                messageLabel.Visible = true;
+                pause();
             }
 
             // touche enter = reprise du jeu
             if (e.KeyCode == Keys.Enter)
             {
-                timer1.Enabled = true;
-                messageLabel.Visible = false;
+                backToNormal();
             }
 
             // touche escape = quitter le jeu
@@ -125,5 +76,83 @@ namespace WindowsFormsApplication1
 
 
 
+
+        // nouvelle partie = (ré)initialisation des paramètres
+        public void newGame()
+        {
+            balle.Top = 20;
+            balle.Left = espaceJeu.Width / 2 - balle.Width / 2;
+            vitesse = 18;
+            gaucheDroite = 1;
+            hautBas = 1;
+            score = 0;
+            scoreLabel.Text = "0";
+            backToNormal();
+        }
+
+        // fin du jeu
+        public void gameOver()
+        {
+            timer1.Enabled = false;
+            messageLabel.Text = "GAME OVER // Score : " + score.ToString() + "\n Nouvelle partie : F2" + "\n Exit : Escape";
+            position();
+            messageLabel.Visible = true;
+        }
+
+        // pause
+        public void pause()
+        {
+            timer1.Enabled = false;
+            messageLabel.Text = "PAUSE. Appuyez sur ENTER pour relancer la partie";
+            position();
+            messageLabel.Visible = true;
+        }
+
+        // retour à un jeu normal (sans message et timer on)
+        public void backToNormal()
+        {
+            timer1.Enabled = true;
+            messageLabel.Visible = false;
+        }
+
+        public void move(PictureBox ball)
+        {   ball.Left = ball.Left + vitesse*gaucheDroite;
+            ball.Top = ball.Top + vitesse*hautBas;
+
+            if (ball.Bottom >= raquette.Top && ball.Bottom <= raquette.Bottom && ball.Left >= raquette.Left && ball.Right <= raquette.Right) // si la balle touche la raquette : 
+            {
+                vitesse = vitesse + 2;
+                hautBas = -1; // balle change de sens verticalement et remonte
+                score = score + 1;
+                scoreLabel.Text = score.ToString();
+            }
+
+            // changement de sens horizontal quand la balle touche bord gauche ou droite
+            if (ball.Left <= espaceJeu.Left)
+            {
+                gaucheDroite = 1;
+            }
+            if (ball.Right >= espaceJeu.Right)
+            {
+                gaucheDroite = -1;
+            }
+            // changement de sens vertical quand la balle touche le sommet de l'espace de jeu
+            if (ball.Top <= espaceJeu.Top)
+            {
+                hautBas = 1;
+            }
+
+            // fin du jeu quand la balle arrive en bas de l'espace de jeu
+            if (ball.Bottom >= espaceJeu.Bottom)
+            {
+                gameOver();
+            }
+
+        }
+
     }
+
+
+
+    
 }
