@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace WindowsFormsApplication1
+namespace Tetris
 {
-    public partial class espaceJeu : Form
+    public partial class Form1 : Form
     {
-        public espaceJeu()
+        public Form1()
         {
             InitializeComponent();
         }
