@@ -30,11 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             this.espaceJeu = new System.Windows.Forms.Panel();
+            this.scoreLabel = new System.Windows.Forms.Label();
+            this.label = new System.Windows.Forms.Label();
             this.balle = new System.Windows.Forms.PictureBox();
             this.raquette = new System.Windows.Forms.PictureBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.label = new System.Windows.Forms.Label();
-            this.scoreLabel = new System.Windows.Forms.Label();
+            this.messageLabel = new System.Windows.Forms.Label();
             this.espaceJeu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.balle)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.raquette)).BeginInit();
@@ -42,6 +43,7 @@
             // 
             // espaceJeu
             // 
+            this.espaceJeu.Controls.Add(this.messageLabel);
             this.espaceJeu.Controls.Add(this.scoreLabel);
             this.espaceJeu.Controls.Add(this.label);
             this.espaceJeu.Controls.Add(this.balle);
@@ -51,6 +53,26 @@
             this.espaceJeu.Name = "espaceJeu";
             this.espaceJeu.Size = new System.Drawing.Size(735, 570);
             this.espaceJeu.TabIndex = 0;
+            // 
+            // scoreLabel
+            // 
+            this.scoreLabel.AutoSize = true;
+            this.scoreLabel.Font = new System.Drawing.Font("Modern No. 20", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.scoreLabel.Location = new System.Drawing.Point(102, 23);
+            this.scoreLabel.Name = "scoreLabel";
+            this.scoreLabel.Size = new System.Drawing.Size(23, 25);
+            this.scoreLabel.TabIndex = 3;
+            this.scoreLabel.Text = "0";
+            // 
+            // label
+            // 
+            this.label.AutoSize = true;
+            this.label.Font = new System.Drawing.Font("Modern No. 20", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label.Location = new System.Drawing.Point(12, 23);
+            this.label.Name = "label";
+            this.label.Size = new System.Drawing.Size(84, 25);
+            this.label.TabIndex = 2;
+            this.label.Text = "Score :";
             // 
             // balle
             // 
@@ -74,23 +96,14 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // label
+            // messageLabel
             // 
-            this.label.AutoSize = true;
-            this.label.Location = new System.Drawing.Point(12, 23);
-            this.label.Name = "label";
-            this.label.Size = new System.Drawing.Size(41, 13);
-            this.label.TabIndex = 2;
-            this.label.Text = "Score :";
-            // 
-            // scoreLabel
-            // 
-            this.scoreLabel.AutoSize = true;
-            this.scoreLabel.Location = new System.Drawing.Point(59, 23);
-            this.scoreLabel.Name = "scoreLabel";
-            this.scoreLabel.Size = new System.Drawing.Size(13, 13);
-            this.scoreLabel.TabIndex = 3;
-            this.scoreLabel.Text = "0";
+            this.messageLabel.AutoSize = true;
+            this.messageLabel.Font = new System.Drawing.Font("Minion Pro Cond", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.messageLabel.Location = new System.Drawing.Point(304, 261);
+            this.messageLabel.Name = "messageLabel";
+            this.messageLabel.Size = new System.Drawing.Size(0, 33);
+            this.messageLabel.TabIndex = 4;
             // 
             // Form1
             // 
@@ -100,6 +113,7 @@
             this.Controls.Add(this.espaceJeu);
             this.Name = "Form1";
             this.Text = "Pong";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.espaceJeu.ResumeLayout(false);
             this.espaceJeu.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.balle)).EndInit();
@@ -116,6 +130,7 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label scoreLabel;
         private System.Windows.Forms.Label label;
+        private System.Windows.Forms.Label messageLabel;
     }
 }
 

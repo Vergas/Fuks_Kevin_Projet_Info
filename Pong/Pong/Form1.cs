@@ -26,6 +26,8 @@ namespace WindowsFormsApplication1
             this.Bounds = Screen.PrimaryScreen.Bounds; // plein écran
             raquette.Top = (espaceJeu.Bottom - 40);  // positionne la raquette en hauteur
 
+            messageLabel.Visible = false; // n'affiche pas le label de message sans raisons
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -62,9 +64,36 @@ namespace WindowsFormsApplication1
             if (balle.Bottom >= espaceJeu.Bottom)
             {
                 timer1.Enabled = false;
+                messageLabel.Text = "GAME OVER // Score : " + score.ToString();
             }
 
         }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space)
+            {
+                timer1.Enabled = false;
+                messageLabel.Text = "PAUSE. Appuyez sur ENTER pour relancer la partie";
+                messageLabel.Left = espaceJeu.Right/2 - messageLabel.Width / 2;
+                messageLabel.Top = espaceJeu.Bottom/2 - messageLabel.Height / 2;
+                messageLabel.Visible = true;
+            }
+
+            if (e.KeyCode == Keys.Enter)
+            {
+                timer1.Enabled = true;
+                messageLabel.Visible = false;
+            }
+
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close();
+            }
+
+        }
+
+
 
 
     }
