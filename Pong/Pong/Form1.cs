@@ -11,17 +11,28 @@ namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-        // initialisation des paramètres
-        public int vitesse = 6;
-        public int gaucheDroite = 1;
-        public int hautBas = 1;
-        public int score = 0;
+        // paramètres
+        public int vitesse;
+        public int gaucheDroite;
+        public int hautBas;
+        public int score;
 
+        // nouvelle partie = (ré)initialisation des paramètres
+        public void newGame()
+        {
+            balle.Top = 20;
+            balle.Left = espaceJeu.Width / 2 - balle.Width / 2;
+            vitesse = 18;
+            gaucheDroite = 1;
+            hautBas = 1;
+            score = 0;
+            timer1.Enabled = true;
+        }
 
         public Form1()
         {
             InitializeComponent();
-            timer1.Enabled = true;
+            newGame();
             this.FormBorderStyle = FormBorderStyle.None; // pas de barre en haut
             this.Bounds = Screen.PrimaryScreen.Bounds; // plein écran
             raquette.Top = (espaceJeu.Bottom - 40);  // positionne la raquette en hauteur
@@ -64,33 +75,51 @@ namespace WindowsFormsApplication1
             if (balle.Bottom >= espaceJeu.Bottom)
             {
                 timer1.Enabled = false;
-                messageLabel.Text = "GAME OVER // Score : " + score.ToString();
+                position();
+                messageLabel.Text = "GAME OVER // Score : " + score.ToString() +"\n Nouvelle partie : F2" + "\n Exit : Escape";
+                messageLabel.Visible = true;
+
             }
 
         }
 
+        // centre le message au milieu de l'écran
+        public void position()
+        {
+            messageLabel.Left = espaceJeu.Width / 2 - messageLabel.Width / 2;
+            messageLabel.Top = espaceJeu.Height / 2 - messageLabel.Height / 2;
+        }
+
+
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            // touche espace = pause
             if (e.KeyCode == Keys.Space)
             {
                 timer1.Enabled = false;
                 messageLabel.Text = "PAUSE. Appuyez sur ENTER pour relancer la partie";
-                messageLabel.Left = espaceJeu.Right/2 - messageLabel.Width / 2;
-                messageLabel.Top = espaceJeu.Bottom/2 - messageLabel.Height / 2;
+                position();
                 messageLabel.Visible = true;
             }
 
+            // touche enter = reprise du jeu
             if (e.KeyCode == Keys.Enter)
             {
                 timer1.Enabled = true;
                 messageLabel.Visible = false;
             }
 
+            // touche escape = quitter le jeu
             if (e.KeyCode == Keys.Escape)
             {
                 this.Close();
             }
 
+            //touche F2 = Nouvelle partie 
+            if (e.KeyCode == Keys.F2)
+            {
+                newGame();
+            }
         }
 
 
