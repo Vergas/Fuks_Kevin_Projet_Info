@@ -12,7 +12,6 @@ namespace WindowsFormsApplication1
 {
     class Balle
     {
-        List<PictureBox> balles;
         PictureBox balle;
         int vitesse = 18;
         int gaucheDroite = 1;
@@ -30,12 +29,10 @@ namespace WindowsFormsApplication1
         // définition d'une balle : picturebox de 20x20 rouge
         public Balle(Panel _espacedejeu)
         {
-            balles = new List<PictureBox>();
             balle = new PictureBox();
             balle.BackColor = Color.Red;
             balle.Size = new Size(20, 20);
             _espacedejeu.Controls.Add(balle);
-            balles.Add(balle);
             balle.Enabled = true;
             balle.Show();
         }
@@ -65,8 +62,16 @@ namespace WindowsFormsApplication1
         // virer la balle pour nouvelle partie par exemple
         public void remove()
         {
-            balle.Enabled = false;
+            balle.Hide();
         }
+
+        public void changeColor()
+        {
+            Random randomGen = new Random();
+            balle.BackColor = Color.FromArgb(randomGen.Next(255), randomGen.Next(255),
+randomGen.Next(255));
+        }
+
 
     }
 }

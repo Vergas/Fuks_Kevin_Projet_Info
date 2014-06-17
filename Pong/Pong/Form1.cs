@@ -8,26 +8,29 @@ using System.Text;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 
 // TO DO : 2eme balle si score%10 = 0 et si balle 2 n'existe pas. (ATTENTION : pas de game over s'il reste une balle en jeu)
 // TO DO : threads pour changer couleur de fond à chaque fois que ça touche la raquette
 // TO DO : Serveur TCP
 // TO DO : Choix clavier / souris
-// TO DO : rajouter musique
 // TO DO : mettre des tiers de raquette : centre : même vitesse horizontale / côté opposé à la vitesse : changement de sens / même côté que vitesse : vitesse horiz*1.2
 // TO DO : 2 players ? (mettre if 1player : top rebondit / if 2 players : top = perdu) 
-// TO DO : ... 
+// TO DO : ...
 
 namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-        // paramètres
+
+        System.Media.SoundPlayer sp = new System.Media.SoundPlayer(@"D:\Kevin\Downloads\SCORE03.wav");
         public int nbJoueurs = 1;
-        public int score;
+        public int score = 0;
         public string clavierSouris = "souris";
         Balle b;
+        Thread color;
+        Thread musique;
         
         public Form1()
         {
@@ -52,6 +55,16 @@ namespace WindowsFormsApplication1
                 b.rebond();
                 score = score + 1;
                 scoreLabel.Text = score.ToString();
+                color = new Thread (b.changeColor);
+                color.Start();
+
+                // relance la musique tous les 2 points (quand elle finit)
+                if (score % 2 == 0)
+                {
+                    musique = new Thread(musiqueOn);
+                    musique.Start();
+                }
+
             }
 
             // si balle touche bord gauche ou droite
@@ -72,6 +85,8 @@ namespace WindowsFormsApplication1
                 gameOver();
             }
 
+
+            // parametres utiles si l'on veut modifier le jeu pour ajouter un 2 ème joueur ou une option de jeu au clavier
             if (nbJoueurs == 1)
             {
                 if (clavierSouris == "souris")
@@ -90,6 +105,7 @@ namespace WindowsFormsApplication1
         }
 
 
+        // réaction au clavier
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             // touche espace = pause
@@ -125,6 +141,7 @@ namespace WindowsFormsApplication1
             {
                 b.remove();
             }
+            sp.Play();
             b = new Balle(espaceJeu);
             score = 0;
             scoreLabel.Text = "0";
@@ -138,6 +155,9 @@ namespace WindowsFormsApplication1
             messageLabel.Text = "GAME OVER // Score : " + score.ToString() + "\n Nouvelle partie : F2" + "\n Exit : Escape";
             position();
             messageLabel.Visible = true;
+            Form2 pseudo = new Form2(score);
+            pseudo.Visible = true;
+
         }
 
         // pause
@@ -155,8 +175,15 @@ namespace WindowsFormsApplication1
             timer1.Enabled = true;
             messageLabel.Visible = false;
         }
-
         
+        public void musiqueOn()
+        {
+            sp.Play();
+        }
+    
+        
+    
+
     }
 
 
