@@ -12,8 +12,6 @@ using System.Threading;
 
 
 // TO DO : 2eme balle si score%10 = 0 et si balle 2 n'existe pas. (ATTENTION : pas de game over s'il reste une balle en jeu)
-// TO DO : threads pour changer couleur de fond à chaque fois que ça touche la raquette
-// TO DO : Serveur TCP
 // TO DO : Choix clavier / souris
 // TO DO : mettre des tiers de raquette : centre : même vitesse horizontale / côté opposé à la vitesse : changement de sens / même côté que vitesse : vitesse horiz*1.2
 // TO DO : 2 players ? (mettre if 1player : top rebondit / if 2 players : top = perdu) 
@@ -30,8 +28,8 @@ namespace WindowsFormsApplication1
         public int score = 0;
         public string clavierSouris = "souris";
         Balle b;
-        Thread color;
-        Thread musique;
+        Thread couleur;
+        Boolean start = true;
         
         public Form1()
         {
@@ -51,37 +49,35 @@ namespace WindowsFormsApplication1
             b.move();
 
             // si balle touche raquette
-            if (b.Bas >= raquette.Top && b.Bas <= raquette.Bottom && b.Gauche >= raquette.Left && b.Droite <= raquette.Right) // si la balle touche la raquette : 
+            if (b.Ballon.Bounds.IntersectsWith(raquette.Bounds)) // si la balle touche la raquette : 
             {
                 b.rebond();
                 score = score + 1;
                 scoreLabel.Text = score.ToString();
-                color = new Thread (b.changeColor);
-                color.Start();
+                
 
                 // relance la musique tous les 2 points (quand elle finit)
                 if (score % 2 == 0)
                 {
-                    musique = new Thread(musiqueOn);
-                    musique.Start();
+                    musiqueOn();
                 }
 
             }
 
             // si balle touche bord gauche ou droite
-            if (b.Gauche <= espaceJeu.Left || b.Droite >= espaceJeu.Right)
+            if (b.Ballon.Left <= espaceJeu.Left || b.Ballon.Right >= espaceJeu.Right)
             {
                 b.invGaucheDroite();
             }
 
             // si balle touche bord supérieur
-            if (b.Haut <= espaceJeu.Top)
+            if (b.Ballon.Top <= espaceJeu.Top)
             {
                 b.rebond();
             }
 
             // si balle touche bord du bas
-            if (b.Bas >= espaceJeu.Bottom)
+            if (b.Ballon.Bottom >= espaceJeu.Bottom)
             {
                 gameOver();
             }
@@ -124,6 +120,7 @@ namespace WindowsFormsApplication1
             // touche escape = quitter le jeu
             if (e.KeyCode == Keys.Escape)
             {
+                start = false;
                 this.Close();
             }
 
@@ -144,6 +141,8 @@ namespace WindowsFormsApplication1
             }
             sp.Play();
             b = new Balle(espaceJeu);
+            couleur = new Thread(changeColor);
+            couleur.Start();
             score = 0;
             scoreLabel.Text = "0";
             backToNormal();
@@ -181,7 +180,17 @@ namespace WindowsFormsApplication1
         {
             sp.Play();
         }
-    
+
+        public void changeColor()
+        {
+            while (start)
+            {
+                Thread.Sleep(500);
+                Random randomGen = new Random();
+                b.Ballon.BackColor = Color.FromArgb(randomGen.Next(255), randomGen.Next(255),
+    randomGen.Next(255));
+            }
+        }
         
     
 

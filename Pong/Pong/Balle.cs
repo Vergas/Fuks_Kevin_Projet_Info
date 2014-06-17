@@ -17,14 +17,7 @@ namespace WindowsFormsApplication1
         int gaucheDroite = 1;
         int hautBas = 1;
 
-        public int haut;
-        public int bas;
-        public int gauche;
-        public int droite;
-        public int Haut { get { return balle.Top; } set { haut = value; } }
-        public int Bas { get { return balle.Bottom; } set { bas = value; } }
-        public int Gauche { get { return balle.Left; } set { gauche = value; } }
-        public int Droite { get { return balle.Right; } set { droite = value; } }
+
 
         // définition d'une balle : picturebox de 20x20 rouge
         public Balle(Panel _espacedejeu)
@@ -65,12 +58,7 @@ namespace WindowsFormsApplication1
             balle.Hide();
         }
 
-        public void changeColor()
-        {
-            Random randomGen = new Random();
-            balle.BackColor = Color.FromArgb(randomGen.Next(255), randomGen.Next(255),
-randomGen.Next(255));
-        }
+        public PictureBox Ballon {get {return balle;}}
 
 
     }
