@@ -17,6 +17,7 @@ using System.Threading;
 // TO DO : Choix clavier / souris
 // TO DO : mettre des tiers de raquette : centre : même vitesse horizontale / côté opposé à la vitesse : changement de sens / même côté que vitesse : vitesse horiz*1.2
 // TO DO : 2 players ? (mettre if 1player : top rebondit / if 2 players : top = perdu) 
+// TO DO : Améliorer serveur de score pour qu'il sauvegarde les résultats dans un fichier
 // TO DO : ...
 
 namespace WindowsFormsApplication1
