@@ -24,7 +24,7 @@ namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-
+        // paramètres, variables
         System.Media.SoundPlayer sp = new System.Media.SoundPlayer(@"D:\Kevin\Downloads\SCORE03.wav");
         public int nbJoueurs = 1;
         public int score = 0;
