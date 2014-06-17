@@ -6,40 +6,79 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Net;
+using System.Net.Sockets;
 
 
 // TO DO : 2eme balle si score%10 = 0 et si balle 2 n'existe pas. (ATTENTION : pas de game over s'il reste une balle en jeu)
 // TO DO : threads pour changer couleur de fond à chaque fois que ça touche la raquette
 // TO DO : Serveur TCP
+// TO DO : Choix clavier / souris
+// TO DO : rajouter musique
+// TO DO : mettre des tiers de raquette : centre : même vitesse horizontale / côté opposé à la vitesse : changement de sens / même côté que vitesse : vitesse horiz*1.2
+// TO DO : 2 players ? (mettre if 1player : top rebondit / if 2 players : top = perdu) 
+// TO DO : ... 
 
 namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
         // paramètres
-        public int vitesse;
-        public int gaucheDroite;
-        public int hautBas;
+        public int nbJoueurs = 1;
         public int score;
-
-
-
+        public string clavierSouris = "souris";
+        Balle b;
+        
         public Form1()
         {
             InitializeComponent();
+
+            // démarre une nouvelle partie
             newGame();
+
+            // éléments graphiques
             this.FormBorderStyle = FormBorderStyle.None; // pas de barre en haut
             this.Bounds = Screen.PrimaryScreen.Bounds; // plein écran
             raquette.Top = (espaceJeu.Bottom - 40);  // positionne la raquette en hauteur
-
-            messageLabel.Visible = false; // n'affiche pas le label de message sans raisons
-
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            move(balle);
-            raquette.Left = Cursor.Position.X - (raquette.Width / 2); // la raquette suit la souris 
+            b.move();
+
+            // si balle touche raquette
+            if (b.Bas >= raquette.Top && b.Bas <= raquette.Bottom && b.Gauche >= raquette.Left && b.Droite <= raquette.Right) // si la balle touche la raquette : 
+            {
+                b.rebond();
+                score = score + 1;
+                scoreLabel.Text = score.ToString();
+            }
+
+            // si balle touche bord gauche ou droite
+            if (b.Gauche <= espaceJeu.Left || b.Droite >= espaceJeu.Right)
+            {
+                b.invGaucheDroite();
+            }
+
+            // si balle touche bord supérieur
+            if (b.Haut <= espaceJeu.Top)
+            {
+                b.rebond();
+            }
+
+            // si balle touche bord du bas
+            if (b.Bas >= espaceJeu.Bottom)
+            {
+                gameOver();
+            }
+
+            if (nbJoueurs == 1)
+            {
+                if (clavierSouris == "souris")
+                {
+                    raquette.Left = Cursor.Position.X - (raquette.Width / 2); // la raquette suit la souris 
+                }
+            }
         }
 
 
@@ -73,23 +112,20 @@ namespace WindowsFormsApplication1
 
             //touche F2 = Nouvelle partie 
             if (e.KeyCode == Keys.F2)
-            {
+            { 
                 newGame();
             }
         }
 
 
-
-
-
         // nouvelle partie = (ré)initialisation des paramètres
         public void newGame()
         {
-            balle.Top = 20;
-            balle.Left = espaceJeu.Width / 2 - balle.Width / 2;
-            vitesse = 18;
-            gaucheDroite = 1;
-            hautBas = 1;
+            if (b != null)
+            {
+                b.remove();
+            }
+            b = new Balle(espaceJeu);
             score = 0;
             scoreLabel.Text = "0";
             backToNormal();
@@ -120,41 +156,7 @@ namespace WindowsFormsApplication1
             messageLabel.Visible = false;
         }
 
-        public void move(PictureBox ball)
-        {   ball.Left = ball.Left + vitesse*gaucheDroite;
-            ball.Top = ball.Top + vitesse*hautBas;
-
-            if (ball.Bottom >= raquette.Top && ball.Bottom <= raquette.Bottom && ball.Left >= raquette.Left && ball.Right <= raquette.Right) // si la balle touche la raquette : 
-            {
-                vitesse = vitesse + 2;
-                hautBas = -1; // balle change de sens verticalement et remonte
-                score = score + 1;
-                scoreLabel.Text = score.ToString();
-            }
-
-            // changement de sens horizontal quand la balle touche bord gauche ou droite
-            if (ball.Left <= espaceJeu.Left)
-            {
-                gaucheDroite = 1;
-            }
-            if (ball.Right >= espaceJeu.Right)
-            {
-                gaucheDroite = -1;
-            }
-            // changement de sens vertical quand la balle touche le sommet de l'espace de jeu
-            if (ball.Top <= espaceJeu.Top)
-            {
-                hautBas = 1;
-            }
-
-            // fin du jeu quand la balle arrive en bas de l'espace de jeu
-            if (ball.Bottom >= espaceJeu.Bottom)
-            {
-                gameOver();
-            }
-
-        }
-
+        
     }
 
 
