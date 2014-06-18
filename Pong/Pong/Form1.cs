@@ -131,7 +131,7 @@ namespace WindowsFormsApplication1
             if (e.KeyCode == Keys.F11)
             {
                 pause();
-                Form3 HighScores = new Form3();
+                HighScores = new Form3();
                 HighScores.Visible = true;
             }
         }
@@ -181,7 +181,7 @@ namespace WindowsFormsApplication1
             messageLabel.Visible = false;
             if (HighScores != null)
             {
-                HighScores.Close();
+                HighScores.Visible = false;
             }
         }
         
