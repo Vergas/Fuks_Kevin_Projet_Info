@@ -16,6 +16,7 @@ using System.Threading;
 // TO DO : mettre des tiers de raquette : centre : même vitesse horizontale / côté opposé à la vitesse : changement de sens / même côté que vitesse : vitesse horiz*1.2
 // TO DO : 2 players ? (mettre if 1player : top rebondit / if 2 players : top = perdu) 
 // TO DO : Améliorer serveur de score pour qu'il sauvegarde les résultats dans un fichier
+// TO DO : En faire un casse brique
 // TO DO : ...
 
 namespace WindowsFormsApplication1
@@ -24,13 +25,16 @@ namespace WindowsFormsApplication1
     {
         // paramètres, variables
         System.Media.SoundPlayer sp = new System.Media.SoundPlayer(@"D:\Kevin\Downloads\SCORE03.wav");
-        public int nbJoueurs = 1;
         public int score = 0;
-        public string clavierSouris = "souris";
         Balle b;
         Thread couleur;
+        Thread musique;
         Boolean start = true;
-        
+        Form3 HighScores;
+
+        //public string clavierSouris = "souris";
+        //public int nbJoueurs = 1;
+
         public Form1()
         {
             InitializeComponent();
@@ -54,14 +58,6 @@ namespace WindowsFormsApplication1
                 b.rebond();
                 score = score + 1;
                 scoreLabel.Text = score.ToString();
-                
-
-                // relance la musique tous les 2 points (quand elle finit)
-                if (score % 2 == 0)
-                {
-                    musiqueOn();
-                }
-
             }
 
             // si balle touche bord gauche ou droite
@@ -84,13 +80,13 @@ namespace WindowsFormsApplication1
 
 
             // parametres utiles si l'on veut modifier le jeu pour ajouter un 2 ème joueur ou une option de jeu au clavier
-            if (nbJoueurs == 1)
-            {
-                if (clavierSouris == "souris")
-                {
+            //if (nbJoueurs == 1)
+            //{
+                //if (clavierSouris == "souris")
+                //{
                     raquette.Left = Cursor.Position.X - (raquette.Width / 2); // la raquette suit la souris 
-                }
-            }
+                //}
+            //}
         }
 
 
@@ -121,6 +117,7 @@ namespace WindowsFormsApplication1
             if (e.KeyCode == Keys.Escape)
             {
                 start = false;
+                musique.Abort();
                 this.Close();
             }
 
@@ -128,6 +125,14 @@ namespace WindowsFormsApplication1
             if (e.KeyCode == Keys.F2)
             { 
                 newGame();
+            }
+
+            //touche F11 = Highscores
+            if (e.KeyCode == Keys.F11)
+            {
+                pause();
+                Form3 HighScores = new Form3();
+                HighScores.Visible = true;
             }
         }
 
@@ -139,10 +144,11 @@ namespace WindowsFormsApplication1
             {
                 b.remove();
             }
-            sp.Play();
             b = new Balle(espaceJeu);
             couleur = new Thread(changeColor);
             couleur.Start();
+            musique = new Thread(musiqueTh);
+            musique.Start();
             score = 0;
             scoreLabel.Text = "0";
             backToNormal();
@@ -157,7 +163,6 @@ namespace WindowsFormsApplication1
             messageLabel.Visible = true;
             Form2 pseudo = new Form2(score);
             pseudo.Visible = true;
-
         }
 
         // pause
@@ -174,6 +179,10 @@ namespace WindowsFormsApplication1
         {
             timer1.Enabled = true;
             messageLabel.Visible = false;
+            if (HighScores != null)
+            {
+                HighScores.Close();
+            }
         }
         
         public void musiqueOn()
@@ -181,11 +190,20 @@ namespace WindowsFormsApplication1
             sp.Play();
         }
 
+        public void musiqueTh()
+        {
+            while (start)
+            {
+                musiqueOn();
+                Thread.Sleep(17500);
+            }
+        }
+
         public void changeColor()
         {
             while (start)
             {
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
                 Random randomGen = new Random();
                 b.Ballon.BackColor = Color.FromArgb(randomGen.Next(255), randomGen.Next(255),
     randomGen.Next(255));

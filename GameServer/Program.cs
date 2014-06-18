@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using System.Text;
+using System.Threading;
 
-namespace Tetris
+
+namespace GameServer
 {
     static class Program
     {
         /// <summary>
-        /// Point d'entrée principal de l'application.
+        /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()

@@ -46,10 +46,11 @@ namespace WindowsFormsApplication1
         // faire se déplacer la balle
         public void move()
         {
-            balle.Hide(); //cache la balle pour éviter d'avoir 3 images de balle pour un déplacement
-            balle.Left += vitesse * gaucheDroite;
-            balle.Top += vitesse * hautBas;
-            balle.Show(); //fait réaparaitre la balle à sa nouvelle position
+            Point p = new Point();
+            p = balle.Location;
+            p.X = balle.Left + vitesse * gaucheDroite;
+            p.Y = balle.Top + vitesse * hautBas;
+            balle.Location = p;
         }
 
         // virer la balle pour nouvelle partie par exemple

@@ -32,15 +32,15 @@ namespace WindowsFormsApplication1
         {
             if (textBox1.Text != "")
             {
-                text = textBox1.Text + " a fait un score de " + scor.ToString();
+                text = "HS," + textBox1.Text + "," + scor.ToString();
                 client.Connect(serverAddress, 8001);
                 stream = client.GetStream();
-                byte[] sndBytes = new byte[10];
                 ASCIIEncoding encoder = new ASCIIEncoding();
-                sndBytes = encoder.GetBytes(text);
+                byte[] sndBytes = encoder.GetBytes(text);
                 stream.Write(sndBytes, 0, text.Length);
                 stream.Flush();
-
+                stream.Close();
+                client.Close();
                 this.Close();
             }
         }

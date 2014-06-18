@@ -1,6 +1,6 @@
-﻿namespace Tetris
+﻿namespace WindowsFormsApplication1
 {
-    partial class Form1
+    partial class Form3
     {
         /// <summary>
         /// Variable nécessaire au concepteur.
@@ -28,33 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.espaceJeu = new System.Windows.Forms.Panel();
+            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.SuspendLayout();
             // 
-            // espaceJeu
+            // webBrowser1
             // 
-            this.espaceJeu.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("espaceJeu.BackgroundImage")));
-            this.espaceJeu.Location = new System.Drawing.Point(78, 30);
-            this.espaceJeu.Name = "espaceJeu";
-            this.espaceJeu.Size = new System.Drawing.Size(200, 440);
-            this.espaceJeu.TabIndex = 0;
+            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser1.Location = new System.Drawing.Point(0, 0);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser1.Name = "webBrowser1";
+            this.webBrowser1.Size = new System.Drawing.Size(311, 356);
+            this.webBrowser1.TabIndex = 0;
             // 
-            // Form1
+            // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(362, 519);
-            this.Controls.Add(this.espaceJeu);
-            this.Name = "Form1";
-            this.Text = "Tetris";
+            this.ClientSize = new System.Drawing.Size(311, 356);
+            this.Controls.Add(this.webBrowser1);
+            this.Name = "Form3";
+            this.Text = "Highscores";
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel espaceJeu;
+        private System.Windows.Forms.WebBrowser webBrowser1;
     }
 }
-
