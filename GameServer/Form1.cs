@@ -17,14 +17,11 @@ namespace GameServer
     public partial class Form1 : Form
     {
         private static TcpListener _listener;
-//        [DllImport("kernel32.dll", EntryPoint = "AllocConsole", SetLastError = true, CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)] 
-//            static extern int AllocConsole();
 
         public Form1()
         {
             InitializeComponent();
             timer1.Enabled = true;
-//            AllocConsole();
         }
 
         private void button1_Click(object sender, EventArgs e)
