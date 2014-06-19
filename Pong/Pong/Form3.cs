@@ -47,9 +47,6 @@ namespace WindowsFormsApplication1
                 public string Pseudo { get; set; }
                 public int Score { get; set; }
 
-                public Pong()
-                {
-                }
             }
 
 
